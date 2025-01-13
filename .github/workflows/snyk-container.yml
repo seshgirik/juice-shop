@@ -30,6 +30,10 @@ jobs:
       with:
         image: your/image-to-test
         args: --file=Dockerfile
+    - name: cat SARIF file
+      run: |
+        # cat SARIF file
+        cat snyk.sarif
     - name: Preprocess SARIF file to remove `null` values
       run: |
         # Replace null with a default severity (e.g., "warning") in the SARIF file
