@@ -34,10 +34,19 @@ jobs:
       run: |
         # cat SARIF file
         cat snyk.sarif
+    - name: md5sum before change
+      run: |
+        md5sum snyk.sarif
     - name: Preprocess SARIF file to remove `null` values
       run: |
         # Replace null with a default severity (e.g., "warning") in the SARIF file
         sed -i 's/"securitySeverity": null/"securitySeverity": "warning"/g' snyk.sarif
+    - name: Replace security-severity undefined for license-related findings 
+      run: |
+        sed -i 's/"security-severity": "undefined"/"security-severity": "0"/g' snyk.sarif
+    - name: md5sum after change
+      run: |
+        md5sum snyk.sarif
     - name: Upload result to GitHub Code Scanning
       uses: github/codeql-action/upload-sarif@v3
       with:
