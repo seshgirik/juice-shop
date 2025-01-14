@@ -44,6 +44,14 @@ jobs:
     - name: Replace security-severity undefined for license-related findings 
       run: |
         sed -i 's/"security-severity": "undefined"/"security-severity": "0"/g' snyk.sarif
+    - name: gsed 
+      run: |
+        gsed -i 's/"security-severity": "undefined"/"security-severity": "0"/g' snyk.sarif
+    - name: awk 
+      run: |
+        awk '{gsub(/"security-severity": "undefined"/, "\"security-severity\": \"0\"")}1' snyk.sarif > temp.sarif && mv temp.sarif snyk.sarif
+
+        
     - name: md5sum after change
       run: |
         md5sum snyk.sarif
